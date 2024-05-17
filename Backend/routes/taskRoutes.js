@@ -1,6 +1,5 @@
 const express = require("express");
 const {
-  getSingleTask,
   createTask,
   updateTask,
   deleteTask,
@@ -10,7 +9,6 @@ const auth = require("../middleware/auth");
 const taskRouter = express.Router();
 
 taskRouter.get("/", auth, getTask);
-taskRouter.get("/:id", auth, getSingleTask);
 taskRouter.post("/", auth, createTask);
 taskRouter.put("/:id", auth, updateTask);
 taskRouter.delete("/:id", auth, deleteTask);

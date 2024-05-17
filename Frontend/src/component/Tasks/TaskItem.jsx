@@ -24,7 +24,7 @@ function TaskItem({ task, onDelete, onEdit }) {
   };
 
   return (
-    <li className="list-group-item">
+    <li className="list-group-item ">
       {isEditing ? (
         <TaskForm
           task={task}
@@ -35,18 +35,18 @@ function TaskItem({ task, onDelete, onEdit }) {
         <div className="d-flex justify-content-between align-items-center">
           <div>
             <h5>{title}</h5>
-            <pre className="pl-4 text-lg text-start whitespace-pre-wrap text-black">
+            <pre className="pl-4 text-lg text-start text-black text-wrap">
               {description}
             </pre>
             <small className="text-muted">
-                  Date: {new Date(dueDate).toLocaleDateString()}
-                </small>
+              Date: {new Date(dueDate).toLocaleDateString()}
+            </small>
           </div>
           <div className="d-flex align-items-center">
             <span
               className={`badge bg-${
                 status === "completed" ? "success" : "danger"
-              } me-4  py-3 px-3`}
+              } me-4 py-3 px-3`}
             >
               {status}
             </span>

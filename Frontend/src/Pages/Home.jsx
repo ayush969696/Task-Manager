@@ -5,26 +5,31 @@ import { useAuth } from "../component/Auth/AuthContext";
 function Home() {
   const [tasks, setTasks] = useState([]);
   const { userLoggedIn } = useAuth();
+  const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
     fetchTasks();
-  }, []);
+  }, [currentPage]);
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/v1/tasks", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `bearer ${JSON.parse(
-            localStorage.getItem("UserToken")
-          )}`,
-        },
-      });
+      const response = await axios.get(
+        `http://localhost:5000/api/v1/tasks?page=${currentPage}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `bearer ${JSON.parse(
+              localStorage.getItem("UserToken")
+            )}`,
+          },
+        }
+      );
       setTasks(response.data.formattedTasks);
     } catch (error) {
       console.error("Error fetching tasks:", error);
     }
   };
+  
 
   const handleCompleteTask = async (taskId) => {
     try {
@@ -40,7 +45,6 @@ function Home() {
           },
         }
       );
-      // Update tasks state after successful completion
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === taskId ? { ...task, status: "completed" } : task
@@ -53,6 +57,18 @@ function Home() {
 
   return (
     <div className="container mt-4">
+      <div className="pagination">
+        <button
+          onClick={() => setCurrentPage((prevPage) => prevPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <span>{currentPage}</span>
+        <button onClick={() => setCurrentPage((prevPage) => prevPage + 1)}>
+          Next
+        </button>
+      </div>
       {userLoggedIn ? (
         <ul className="list-group mt-3">
           <h2>All Tasks</h2>
@@ -62,11 +78,11 @@ function Home() {
               <div className="d-flex justify-content-between align-items-center">
                 <div>
                   <h5>{task.title}</h5>
-                  <pre className="pl-4 text-lg text-start whitespace-pre-wrap text-black">
+                  <pre className="text-lg text-start whitespace-pre-wrap text-black text-wrap">
                     {task.description}
                   </pre>
                   <small className="text-muted">
-                    Date: {new Date(task.dueDate).toLocaleDateString()}
+                    Date: {new Date(task.dueDate).toDateString()}
                   </small>
                 </div>
                 <div className="d-flex align-items-center">

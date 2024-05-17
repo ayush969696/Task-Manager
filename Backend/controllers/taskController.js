@@ -1,64 +1,33 @@
 const Task = require("../models/taskModel");
 
 const getTask = async (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
   try {
-    const tasks = await Task.find({ user: req.userId }).sort({ createdAt:1 });
+    const tasks = await Task.find({ user: req.userId })
+      .sort({ createdAt: 1 })
+      .skip(startIndex)
+      .limit(limit);
 
     const formattedTasks = tasks.map((task) => ({
       id: task._id,
       title: task.title,
       description: task.description,
       status: task.status,
-      dueDate:task.createdAt , 
+      dueDate: task.createdAt,
     }));
+
     res.status(200).send({
       success: true,
       message: "Get All Tasks!",
       formattedTasks,
     });
   } catch (error) {
-    console.error("Server Error GetTask : ", error.message);
-    return res.status(500).send({
-      success: false,
-      message: "Server Error",
-      error,
-    });
-  }
-};
-
-const getSingleTask = async (req, res) => {
-  try {
-    const id = req.params.id;
-
-    const task = await Task.findById(id);
-
-    if (!task) {
-      return res.status(400).send({
-        success: false,
-        message: "Task not found",
-      });
-    }
-
-    if (task.user.toString() !== req.userId) {
-      return res.status(401).send({
-        success: false,
-        message: "Not authorized to access this task",
-      });
-    }
-
-    res.status(200).send({
-      success: true,
-      message: "Get Single Task!",
-      task: {
-        id: task._id,
-        title: task.title,
-        description: task.description,
-        status: task.status,
-        dueDate: task.createdAt, 
-      },
-    });
-  } catch (error) {
-    console.error("Error from GetSingleTask", error.message);
+    console.error("Server Error GetTask: ", error.message);
     return res.status(500).send({
       success: false,
       message: "Server Error",
@@ -149,7 +118,6 @@ const deleteTask = async (req, res) => {
 
 module.exports = {
   getTask,
-  getSingleTask,
   createTask,
   updateTask,
   deleteTask,
