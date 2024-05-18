@@ -7,7 +7,7 @@ const app = express();
 const cors = require('cors'); 
 
 const option = {
-    "origin": "http://localhost:5173",
+    "origin":"https://task-manager-eight-xi.vercel.app/",
     "method":"GET,POST,PUT,DELETE"
 }
 
