@@ -11,7 +11,7 @@ const Register = () => {
     email: "",
     password: "",
   });
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const { username, email, password } = formData;
 
@@ -22,7 +22,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://task-manager-eight-xi.vercel.app/register",
+        "https://task-manager-eight-xi.vercel.app/api/v1/auth/register",
         formData
       );
       localStorage.setItem("UserToken", JSON.stringify(res.data.token));
@@ -34,7 +34,7 @@ const Register = () => {
           email: "",
           password: "",
         });
-        navigate("/")
+        navigate("/");
       }
     } catch (err) {
       console.error(err.response.data);

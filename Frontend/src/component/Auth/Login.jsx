@@ -21,7 +21,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "https://task-manager-eight-xi.vercel.app/login",
+        "https://task-manager-eight-xi.vercel.app/api/v1/auth/login",
         formData,
         {
           "Content-Type": "application/json",
