@@ -22,7 +22,7 @@ const Register = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/v1/auth/register",
+        "https://task-manager-eight-xi.vercel.app/register",
         formData
       );
       localStorage.setItem("UserToken", JSON.stringify(res.data.token));

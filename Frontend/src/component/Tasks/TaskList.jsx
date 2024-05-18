@@ -15,7 +15,7 @@ function TaskList() {
   const fetchTasks = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/api/v1/tasks",
+        "https://task-manager-eight-xi.vercel.app/tasks",
         {
           headers: {
             "Content-Type": "application/json",
@@ -34,7 +34,7 @@ function TaskList() {
   const handleEdit = async (editedTask) => {
     try {
       const response = await axios.put(
-        `http://localhost:5000/api/v1/tasks/${editedTask.id}`,
+        `https://task-manager-eight-xi.vercel.app/tasks/${editedTask.id}`,
         editedTask,
         {
           headers: {
@@ -54,7 +54,7 @@ function TaskList() {
 
   const handleDelete = async (taskId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/v1/tasks/${taskId}`, {
+      await axios.delete(`https://task-manager-eight-xi.vercel.app/tasks/${taskId}`, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `bearer ${JSON.parse(
